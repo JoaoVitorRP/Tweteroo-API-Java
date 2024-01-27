@@ -11,6 +11,8 @@ import com.tweteroo.api.models.UserModel;
 import com.tweteroo.api.repositories.TweetsRepository;
 import com.tweteroo.api.repositories.UsersRepository;
 
+import lombok.NonNull;
+
 @Service
 public class TweetsService {
     final TweetsRepository tweetsRepository;
@@ -34,5 +36,15 @@ public class TweetsService {
 
     public List<TweetModel> findAll() {
         return tweetsRepository.findAll();
+    }
+
+    public Optional<List<TweetModel>> findByUserId(@NonNull Long userId) {
+        Optional<UserModel> user = usersRepository.findById(userId);
+
+        if (!user.isPresent()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(tweetsRepository.findByUserId(userId));
     }
 }
