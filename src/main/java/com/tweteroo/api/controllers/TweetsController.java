@@ -9,12 +9,14 @@ import com.tweteroo.api.services.TweetsService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/tweets")
@@ -32,8 +34,14 @@ public class TweetsController {
         if (!tweet.isPresent()) {
             return ResponseEntity.status(400).body("User not found!");
         }
-        
+
         return ResponseEntity.status(201).body(tweet);
     }
-    
+
+    @GetMapping
+    public ResponseEntity<List<TweetModel>> getTweets() {
+        List<TweetModel> tweets = tweetsService.findAll();
+        return ResponseEntity.status(200).body(tweets);
+    }
+
 }
